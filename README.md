@@ -1,5 +1,7 @@
 # Libcurl docker
 
+## EX 1: file transfer using curl (command line)
+
 Set up 2 docker containers:
 
 - server
@@ -7,15 +9,19 @@ Set up 2 docker containers:
 
 Goal: `server` has a file `lorem.txt` which we want to fetch from the client using [libcurl](https://everything.curl.dev/libcurl).
 
-## step 1: setup docker containers
+### step 1: setup docker containers
 
-cleanup previous setups: `docker system prune`
+clean-up previous setups: `docker system prune`
 
-### 1.1 setup network
+#### setup network
 
 [docker-openssh-server](https://github.com/linuxserver/docker-openssh-server)
 
-`docker-compose.yml`
+`cd ~/libcurl-docker/EX-1`
+
+Start containers/network: `docker-compose up`
+
+`docker-compose.yml`:
 
 ```yml
 version: "3.7"
@@ -33,19 +39,25 @@ services:
         tty: true
 ```
 
-`cd libcurl-docker/step_1`
+![docker-compose](images/docker-compose.png)
 
-Start containers/network: `docker-compose up`
+#### terminal for server
 
-Open terminal for server: `docker exec -ti step_1_server_1 /bin/bash`
+`docker exec -ti ex-1_server_1 /bin/bash`
 
-Open terminal for client: `docker exec -ti step_1_client_1 /bin/bash`
+![server](images/server.png)
 
-### 1.2 server setup
+#### terminal for client
+
+`docker exec -ti ex-1_client_1 /bin/bash`
+
+![client](images/client.png)
+
+#### server setup
 
 ```
 apt-get update 
-apt-get install ssh -y (8/50)
+apt-get install ssh -y 
 service ssh restart
 service ssh status
 cd ext-files
@@ -53,33 +65,37 @@ chmod +x sftp_setup.sh
 ./sftp_setup.sh
 ```
 
-### 1.3 client setup
+![server-setup](images/server-setup.png)
 
-[Documentation]((https://everything.curl.dev/get/linux))
+Move `lorem.txt` to `/data/sftp_usr/upload`:
 
-In `client` container:
+`mv /ext-files/lorem.txt /data/sftp_usr/upload/`
+
+#### client setup
 
 ```
 apt-get update
 apt-get -y install curl
 ```
 
-## step 2: execute file transfer using command-line
+![client-setup](images/client-setup.png)
 
-### client
+#### client: file transfer using command-line
 
-```
-curl sftp://172.18.0.2/ -u sftp_usr
-```
-
-### client: 
-
-[`curl sftp://example.com/file.zip -u user`](https://everything.curl.dev/usingcurl/scpsftp)
+from `client` terminal (password is `sftp`): 
 
 ```
-curl sftp://server/ext-files/lorem.txt -u sftp_usr
+curl sftp://server/upload/lorem.txt -k -u sftp_usr
 ```
 
-## step 3: execute file transfer using libcurl (c library)
+![file-transfer](images/file-transfer.png)
+
+To save the file add `-o lorem.txt`:
+
+```
+curl sftp://server/upload/lorem.txt -k -u sftp_usr -o lorem.txt
+```
+
+## EX 2: file transfer using libcurl (c library)
 
 [`curl/docs/examples/sftpget.c`](https://github.com/curl/curl/blob/master/docs/examples/sftpget.c)
