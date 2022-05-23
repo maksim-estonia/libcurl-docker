@@ -9,5 +9,5 @@ chown -R sftp_usr:sftp_users /data/sftp_usr/upload
 echo "Match Group sftp_users" >> /etc/ssh/sshd_config
 echo "ChrootDirectory /data/%u" >> /etc/ssh/sshd_config
 echo "ForceCommand internal-sftp" >> /etc/ssh/sshd_config
-service ssh start
+service ssh restart
 hostname -I

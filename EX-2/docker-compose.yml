@@ -6,8 +6,10 @@ services:
         stdin_open: true
         tty: true
         volumes:
-            - ./ext-files:/ext-files/
+            - ./server-volume:/ext-files/
     client:
         image: ubuntu:20.04
         stdin_open: true
         tty: true
+        volumes:
+            - ./client-volume:/ext-files/
