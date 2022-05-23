@@ -11,9 +11,9 @@
     - [server: setup](#server-setup-1)
     - [client: file transfer](#client-file-transfer-1)
     - [references](#references-1)
-  - [EX 3: file transfer using curl (C++ API)](#ex-3-file-transfer-using-curl-c-api)
+  - [EX 3: file transfer using libcurl (C++ API)](#ex-3-file-transfer-using-libcurl-c-api)
     - [references](#references-2)
-  - [EX 4: file transfer using curl (CMake build)](#ex-4-file-transfer-using-curl-cmake-build)
+  - [EX 4: file transfer using libcurl (CMake build)](#ex-4-file-transfer-using-libcurl-cmake-build)
 
 ## EX 1: file transfer using curl (command line)
 
@@ -157,6 +157,7 @@ touch known_hosts
 ssh-keyscan -H server >> ~/.ssh/known_hosts
 ```
 
+File transfer:
 ```
 cd /ext-files
 g++ sftpget.c -l curl -o sftpget.out
@@ -177,10 +178,10 @@ g++ sftpget.c -l curl -o sftpget.out
 
 [CURLOPT_USERPWD explained](https://curl.se/libcurl/c/CURLOPT_USERPWD.html)
 
-## EX 3: file transfer using curl (C++ API)
+## EX 3: file transfer using libcurl (C++ API)
 
 ### references
 
 [C++ API](https://everything.curl.dev/libcurl/cplusplus)
 
-## EX 4: file transfer using curl (CMake build)
+## EX 4: file transfer using libcurl (CMake build)
