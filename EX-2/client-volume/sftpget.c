@@ -28,9 +28,6 @@
 
 #include <curl/curl.h>
 
-/* define this to switch off the use of ssh-agent in this program */
-#undef DISABLE_SSH_AGENT
-
 /*
  * This is an example showing how to get a single file from an SFTP server.
  * It delays the actual destination file creation until the first write
@@ -62,7 +59,7 @@ int main(void)
   CURL *curl;
   CURLcode res;
   struct FtpFile ftpfile = {
-    "yourfile.bin", /* name to store the file as if successful */
+    "lorem.txt", /* name to store the file as if successful */
     NULL
   };
 
@@ -74,18 +71,13 @@ int main(void)
      * You better replace the URL with one that works!
      */
     curl_easy_setopt(curl, CURLOPT_URL,
-                     "sftp://user@server/home/user/file.txt");
+                     "sftp://sftp_usr@server/upload/lorem.txt");
+    /* Set user password */
+    curl_easy_setopt(curl, CURLOPT_USERPWD, "sftp_usr:sftp");
     /* Define our callback to get called when there's data to be written */
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, my_fwrite);
     /* Set a pointer to our struct to pass to the callback */
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &ftpfile);
-
-#ifndef DISABLE_SSH_AGENT
-    /* We activate ssh agent. For this to work you need
-       to have ssh-agent running (type set | grep SSH_AGENT to check) or
-       pageant on Windows (there is an icon in systray if so) */
-    curl_easy_setopt(curl, CURLOPT_SSH_AUTH_TYPES, CURLSSH_AUTH_AGENT);
-#endif
 
     /* Switch on full protocol/debug output */
     curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);

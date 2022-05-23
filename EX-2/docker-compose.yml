@@ -2,13 +2,13 @@ version: "3.7"
 
 services:
     server:
-        image: ubuntu:20.04
+        image: maksimdrachov/sftp-server
         stdin_open: true
         tty: true
         volumes:
             - ./server-volume:/ext-files/
     client:
-        image: ubuntu:20.04
+        image: maksimdrachov/sftp-client-libcurl
         stdin_open: true
         tty: true
         volumes:
