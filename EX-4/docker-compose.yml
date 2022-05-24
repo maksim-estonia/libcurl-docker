@@ -1,0 +1,15 @@
+version: "3.7"
+
+services:
+    server:
+        image: maksimdrachov/sftp-server
+        stdin_open: true
+        tty: true
+        volumes:
+            - ./server-volume:/ext-files/
+    client:
+        image: maksimdrachov/sftp-client-libcurl-cmake
+        stdin_open: true
+        tty: true
+        volumes:
+            - ./client-volume:/ext-files/

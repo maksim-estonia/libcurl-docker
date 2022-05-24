@@ -12,8 +12,8 @@
     - [client: file transfer](#client-file-transfer-1)
     - [references](#references-1)
   - [EX 3: file transfer using libcurl (C++ API)](#ex-3-file-transfer-using-libcurl-c-api)
-    - [references](#references-2)
   - [EX 4: file transfer using libcurl (CMake build)](#ex-4-file-transfer-using-libcurl-cmake-build)
+    - [references](#references-2)
 
 ## EX 1: file transfer using curl (command line)
 
@@ -180,8 +180,50 @@ g++ sftpget.c -l curl -o sftpget.out
 
 ## EX 3: file transfer using libcurl (C++ API)
 
-### references
-
 [C++ API](https://everything.curl.dev/libcurl/cplusplus)
 
 ## EX 4: file transfer using libcurl (CMake build)
+
+`curl` dependency graph:
+
+![curl](curl-graph.png)
+
+`libcurl` dependency graph
+
+![libcurl](libcurl-graph.png)
+
+To build in environments that support configure, after having cloned everything from git, do this:
+
+```
+autoreconf -fi
+./configure (--with-openssl)
+make
+make test (optional)
+make install
+export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+```
+
+If you want to install curl in a different file hierarchy than `/usr/local`, specify that when running configure:
+
+./configure --prefix=/path/to/curl/tree
+
+The configure script always tries to find a working SSL library unless explicitly told not to. If you have OpenSSL installed in the default search path for your compiler/linker, you do not need to do anything special. If you have OpenSSL installed in /usr/local/ssl, you can run configure like:
+
+`./configure --with-openssl`
+
+REQUIREMENTS
+
+For autoreconf and configure (not buildconf.bat) to work, you need the
+following software installed:
+
+- autoconf 2.57  (or later)
+- automake 1.7   (or later)
+- libtool  1.4.2 (or later)
+- GNU m4 (required by autoconf)
+- nroff + perl
+
+### references
+
+[docs: CMake](https://everything.curl.dev/build/cmake)
+
+[install instructions](https://curl.se/docs/install.html)
